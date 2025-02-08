@@ -30,10 +30,18 @@ pre {
   border: 1px solid #ccc;
 }
 
-#login-form input {
+#login-form input,
+#registration-form input {
   width: 100%;
   margin-bottom: 10px;
   padding: 8px;
+}
+
+#registration-form {
+  width: 300px;
+  margin: 50px auto;
+  padding: 20px;
+  border: 1px solid #ccc;
 }
 
 #admin-dashboard {
@@ -49,7 +57,10 @@ pre {
   border-collapse: collapse;
 }
 
-#article-table th, #article-table td {
+#article-table th,
+#article-table td,
+#user-table th,
+#user-table td {
   border: 1px solid #ddd;
   padding: 8px;
   text-align: left;
@@ -60,8 +71,18 @@ pre {
   width: 500px;
 }
 
-#edit-article input[type="text"], #edit-article textarea {
+#edit-article input[type="text"],
+#edit-article textarea {
   width: 100%;
   padding: 8px;
   margin-bottom: 10px;
+}
+
+#user-management {
+  margin: 20px;
+}
+
+#user-table {
+  width: 100%;
+  border-collapse: collapse;
 }

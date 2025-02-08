@@ -6,25 +6,60 @@
     <title>Simple Blog</title>
     <link rel="stylesheet" href="style.css" />
     <link href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   </head>
   <body>
-    <div id="login-form">
+    <div id="login-form" style="display: none;">
       <h2>Login</h2>
       <input type="text" id="username" placeholder="Username"><br>
       <input type="password" id="password" placeholder="Password"><br>
       <button onclick="login()">Login</button>
       <div id="login-error" style="color: red;"></div>
+      <p>
+        Not registered?
+        <a href="#" onclick="showRegistrationForm()">Register</a>
+      </p>
+    </div>
+
+    <div id="registration-form" style="display: none;">
+      <h2>Register</h2>
+      <input type="email" id="register-email" placeholder="Email"><br>
+      <input type="text" id="register-username" placeholder="Username"><br>
+      <input type="password" id="register-password" placeholder="Password"><br>
+      <button onclick="register()">Register</button>
+      <div id="registration-error" style="color: red;"></div>
     </div>
 
     <div id="admin-dashboard" style="display: none;">
-      <h2>Admin Dashboard</h2>
-      <button onclick="showArticleList()">Show Article List</button>
-      <button onclick="showCreateArticleForm()">Create New Article</button>
+      <h2>
+        Admin Dashboard
+        <span id="user-greeting"></span>
+        <i class="fa fa-user"></i>
+      </h2>
+      <button onclick="showArticleList()">
+        <i class="fa fa-list"></i>
+        Show Article List
+      </button>
+      <button onclick="showCreateArticleForm()">
+        <i class="fa fa-plus"></i>
+        Create New Article
+      </button>
+      <button onclick="showUserManagement()">
+        <i class="fa fa-users"></i>
+        User Management
+      </button>
+      <button onclick="logout()">
+        <i class="fa fa-sign-out"></i>
+        Logout
+      </button>
       <div id="dashboard-content"></div>
     </div>
 
     <div id="article-list" style="display: none;">
-      <h2>Article List</h2>
+      <h2>
+        Article List
+        <i class="fa fa-list"></i>
+      </h2>
       <table id="article-table">
         <thead>
           <tr>
@@ -36,12 +71,21 @@
         <tbody>
         </tbody>
       </table>
-      <button onclick="updateSelectedArticles()">Update Selected</button>
-      <button onclick="deleteSelectedArticles()">Delete Selected</button>
+      <button onclick="updateSelectedArticles()">
+        <i class="fa fa-edit"></i>
+        Update Selected
+      </button>
+      <button onclick="deleteSelectedArticles()">
+        <i class="fa fa-trash"></i>
+        Delete Selected
+      </button>
     </div>
 
     <div id="edit-article" style="display: none;">
-      <h2>Edit Article</h2>
+      <h2>
+        Edit Article
+        <i class="fa fa-edit"></i>
+      </h2>
       <input type="hidden" id="edit-article-id">
       <label for="edit-article-title">Title:</label><br>
       <input type="text" id="edit-article-title"><br>
@@ -49,13 +93,58 @@
       <textarea id="edit-article-content"></textarea><br>
       <label for="edit-article-image">Image:</label><br>
       <input type="file" id="edit-article-image"><br>
-      <button onclick="submitArticle()">Submit</button>
-      <button onclick="updateArticle()">Update</button>
-      <button onclick="deleteArticle()">Delete</button>
+      <button onclick="submitArticle()">
+        <i class="fa fa-check"></i>
+        Submit
+      </button>
+      <button onclick="updateArticle()">
+        <i class="fa fa-save"></i>
+        Update
+      </button>
+      <button onclick="deleteArticle()">
+        <i class="fa fa-trash"></i>
+        Delete
+      </button>
+    </div>
+
+    <div id="user-management" style="display: none;">
+      <h2>
+        User Management
+        <i class="fa fa-users"></i>
+      </h2>
+      <table id="user-table">
+        <thead>
+          <tr>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+      <button onclick="showCreateUserForm()">
+        <i class="fa fa-plus"></i>
+        Create User
+      </button>
+    </div>
+
+    <div id="create-user" style="display: none;">
+      <h2>Create User</h2>
+      <label for="create-username">Username:</label><br>
+      <input type="text" id="create-username"><br>
+      <label for="create-email">Email:</label><br>
+      <input type="email" id="create-email"><br>
+      <label for="create-password">Password:</label><br>
+      <input type="password" id="create-password"><br>
+      <button onclick="createUser()">Create</button>
     </div>
 
     <div id="articles">
-      <h2>Articles</h2>
+      <h2>
+        Articles
+        <i class="fa fa-newspaper"></i>
+      </h2>
     </div>
 
     <script src="script.js"></script>
