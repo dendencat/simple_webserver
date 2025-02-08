@@ -1,9 +1,11 @@
 version: "3.8"
 services:
   db:
-    image: postgres:13
+    build: ./db  # changed: build the custom PostgreSQL image
     volumes:
       - db_data:/var/lib/postgresql/data
+      - ./pg_keys:/app/keys  # external volume for keys
+      - ./certs:/etc/postgresql/certs:ro
     ports:
       - "5432:5432"
     environment:

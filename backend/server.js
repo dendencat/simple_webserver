@@ -1,27 +1,63 @@
-const express = require("express");
-const { Sequelize, DataTypes } = require("sequelize");
-const bodyParser = require("body-parser");
-const cors = require("cors");
-const multer = require("multer");
-const path = require("path");
+import express from "express";
+import { Sequelize, DataTypes } from "sequelize";
+import pkg from "body-parser";
+import cors from "cors";
+import multer, { diskStorage } from "multer";
+import { extname } from "path";
 
 const app = express();
 const port = process.env.PORT || 3000;
+const { json } = pkg;
 
 app.use(cors());
-app.use(bodyParser.json());
+app.use(json());
 app.use(express.static("public"));
 
 // Set up Sequelize
-const sequelize = new Sequelize(process.env.DATABASE_URL, {
-  dialect: "postgres",
+// const { Sequelize } = require("sequelize");
+
+// 環境変数から DATABASE_URL を取得（例：postgres://example:password@db:5432/blog_db）
+const databaseUrl = process.env.DATABASE_URL;
+
+const sequelize = new Sequelize(databaseUrl, {
+  dialect: 'postgres',
   dialectOptions: {
     ssl: {
       require: true,
-      rejectUnauthorized: false,
-    },
+      rejectUnauthorized: false, // 開発環境用。実運用では適切なルート証明書を指定してください。
+    }
+  },
+  pool: {
+    max: 5,
+    min: 0,
+    acquire: 30000,
+    idle: 10000,
   },
 });
+
+async function connectToDatabase() {
+  let attempts = 0;
+  const maxAttempts = 10;
+
+  while (attempts < maxAttempts) {
+    try {
+      await sequelize.authenticate();
+      console.log('Connection has been established successfully.');
+      break; // Exit the loop if the connection is successful
+    } catch (error) {
+      attempts++;
+      console.error(`Attempt ${attempts}: Unable to connect to the database:`, error);
+      await new Promise(resolve => setTimeout(resolve, 5000)); // Wait 5 seconds before retrying
+    }
+  }
+
+  if (attempts === maxAttempts) {
+    console.error('Failed to connect to the database after multiple attempts.');
+    process.exit(1); // Exit the process if the connection fails after all attempts
+  }
+}
+
+connectToDatabase();
 
 // Define the Article model
 const Article = sequelize.define("Article", {
@@ -39,14 +75,14 @@ const Article = sequelize.define("Article", {
 });
 
 // Configure multer for image uploads
-const storage = multer.diskStorage({
+const storage = diskStorage({
   destination: (req, file, cb) => {
     cb(null, "public/images");
   },
   filename: (req, file, cb) => {
     cb(
       null,
-      file.fieldname + "-" + Date.now() + path.extname(file.originalname)
+      file.fieldname + "-" + Date.now() + extname(file.originalname)
     );
   },
 });
