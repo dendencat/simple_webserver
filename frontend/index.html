@@ -8,10 +8,56 @@
     <link href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism.min.css" rel="stylesheet" />
   </head>
   <body>
-    <div id="app">
-      <h1>Simple Blog</h1>
-      <div id="articles"></div>
+    <div id="login-form">
+      <h2>Login</h2>
+      <input type="text" id="username" placeholder="Username"><br>
+      <input type="password" id="password" placeholder="Password"><br>
+      <button onclick="login()">Login</button>
+      <div id="login-error" style="color: red;"></div>
     </div>
+
+    <div id="admin-dashboard" style="display: none;">
+      <h2>Admin Dashboard</h2>
+      <button onclick="showArticleList()">Show Article List</button>
+      <button onclick="showCreateArticleForm()">Create New Article</button>
+      <div id="dashboard-content"></div>
+    </div>
+
+    <div id="article-list" style="display: none;">
+      <h2>Article List</h2>
+      <table id="article-table">
+        <thead>
+          <tr>
+            <th>Select</th>
+            <th>Title</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+      <button onclick="updateSelectedArticles()">Update Selected</button>
+      <button onclick="deleteSelectedArticles()">Delete Selected</button>
+    </div>
+
+    <div id="edit-article" style="display: none;">
+      <h2>Edit Article</h2>
+      <input type="hidden" id="edit-article-id">
+      <label for="edit-article-title">Title:</label><br>
+      <input type="text" id="edit-article-title"><br>
+      <label for="edit-article-content">Content:</label><br>
+      <textarea id="edit-article-content"></textarea><br>
+      <label for="edit-article-image">Image:</label><br>
+      <input type="file" id="edit-article-image"><br>
+      <button onclick="submitArticle()">Submit</button>
+      <button onclick="updateArticle()">Update</button>
+      <button onclick="deleteArticle()">Delete</button>
+    </div>
+
+    <div id="articles">
+      <h2>Articles</h2>
+    </div>
+
     <script src="script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-javascript.min.js"></script>
