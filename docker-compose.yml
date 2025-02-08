@@ -1,0 +1,32 @@
+version: "3.8"
+services:
+  db:
+    image: postgres:13
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: example
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: blog_db
+  backend:
+    build: ./backend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: postgres://example:password@db:5432/blog_db
+      PORT: 3000
+  frontend:
+    build: ./frontend
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
+    environment:
+      BACKEND_URL: http://localhost:3000
+
+volumes:
+  db_data:
